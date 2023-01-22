@@ -1,0 +1,31 @@
+.statistics {
+  width: 400px;
+  margin: 0 auto 30px;
+
+  text-align: center;
+  border: 1px solid rgb(167, 163, 163);
+  border-radius: 4px;
+}
+
+.statList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.statList > li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  padding: 15px;
+}
+
+.percentage {
+  font-size: 20px;
+}
