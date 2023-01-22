@@ -1,26 +1,68 @@
-import { Profile } from './Profile/Profile';
-import { Statistics } from './Statistics/Statistics';
-import { FriendList } from './FriendList/FriendList';
-import { TransactionHistory } from './TransactionHistory/TransactionHistory';
+import { Component } from 'react';
+import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
+import { ContactsList } from './ContactsList/ContactsList';
+import { Section } from './Section/Section';
 
-import userData from '../data/user';
-import statsData from '../data/data';
-import friendsData from '../data/friends';
-import transactionsData from '../data/transactions';
+export class App extends Component {
+  state = {
+    contacts: [],
+    filter: '',
+  };
 
-export const App = () => {
-  return (
-    <>
-      <Profile
-        username={userData.username}
-        tag={userData.tag}
-        location={userData.location}
-        avatar={userData.avatar}
-        stats={userData.stats}
-      />
-      <Statistics title="Upload stats" stats={statsData} />
-      <FriendList friends={friendsData} />
-      <TransactionHistory items={transactionsData} />
-    </>
-  );
-};
+  addNewContact = newContact => {
+    const existsContact = this.state.contacts.find(
+      contact => contact.name.toUpperCase() === newContact.name.toUpperCase()
+    );
+
+    if (existsContact) {
+      alert(`${newContact.name} is already in contacts`);
+    } else {
+      this.setState(prevState => ({
+        contacts: [...prevState.contacts, newContact],
+      }));
+    }
+  };
+
+  deleteContact = contactName => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(
+        contact => contact.name !== contactName
+      ),
+    }));
+  };
+
+  setContactFilter = filterQuery => {
+    this.setState({ filter: filterQuery });
+  };
+
+  filterContacts = () => {
+    const { contacts, filter } = this.state;
+    const trimmedFilter = filter.toUpperCase().trim();
+    if (trimmedFilter) {
+      const filteredContacts = contacts.filter(contact =>
+        contact.name.toUpperCase().includes(trimmedFilter)
+      );
+      return filteredContacts.length !== 0 ? filteredContacts : null;
+    }
+    return contacts;
+  };
+
+  render() {
+    return (
+      <Section>
+        <div>
+          <h1>Phonebook</h1>
+          <ContactForm addNewContact={this.addNewContact} />
+
+          <h2>Contacts</h2>
+          <Filter setContactFilter={this.setContactFilter} />
+          <ContactsList
+            contacts={this.filterContacts()}
+            deleteContact={this.deleteContact}
+          />
+        </div>
+      </Section>
+    );
+  }
+}
