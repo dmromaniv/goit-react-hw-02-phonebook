@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import s from './ContactItem.module.css';
 
-export const ContactItem = ({ name, number, deleteContact }) => {
+export const ContactItem = ({ id, name, number, deleteContact }) => {
   const onDeleteBtnClick = event => {
     deleteContact(event.target.value);
   };
   return (
     <li className={s.listItem}>
       {name} - {number}
-      <button value={name} className={s.button} onClick={onDeleteBtnClick}>
+      <button value={id} className={s.button} onClick={onDeleteBtnClick}>
         Delete
       </button>
     </li>

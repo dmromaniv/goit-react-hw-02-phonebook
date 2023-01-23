@@ -15,16 +15,21 @@ export class ContactForm extends Component {
     return this.setState({ [name]: value });
   };
 
+  resetForm = () => {
+    this.setState({ name: '', number: '' });
+  };
+
   handleContactFormSubmit = event => {
     event.preventDefault();
 
-    const { name, number } = this.state;
+    let { name, number } = this.state;
     const newContact = {
       id: uuidv4(),
       name: name,
       number: number,
     };
     this.props.addNewContact(newContact);
+    this.resetForm();
   };
 
   render() {
